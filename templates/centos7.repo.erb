@@ -1,0 +1,22 @@
+[centos-base]
+name=CentOS-7.x - Base
+baseurl=http://<%= node['websrv_ip'] %>/centos7/os/
+gpgcheck=1
+enabled=<%= node['rwebsrv']['repo_stat'] %>
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#released updates
+[centos-updates]
+name=CentOS-7.x - Updates
+baseurl=http://<%= node['websrv_ip'] %>/centos7/updates/
+gpgcheck=1
+enabled=<%= node['rwebsrv']['repo_stat'] %>
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#additional packages that may be useful
+[centos-extras]
+name=CentOS-7.x - Extras
+baseurl=http://<%= node['websrv_ip'] %>/centos7/extras/
+gpgcheck=1
+enabled=<%= node['rwebsrv']['repo_stat'] %>
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
