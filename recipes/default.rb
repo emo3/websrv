@@ -6,7 +6,7 @@
 include_recipe '::filesystem'
 
 # set the IP and chef server name
-hostsfile_entry node['chefsrv_ip'] do
+hostsfile_entry node['rwebsrv']['chefsrv_ip'] do
   hostname 'chefsrv'
   action   :create
   unique   true
@@ -198,6 +198,6 @@ cron 'daily-repo-sync' do
 end
 
 # change ip
-ifconfig node['websrv_ip'] do
+ifconfig node['rwebsrv']['websrv_ip'] do
   device 'enp0s8'
 end

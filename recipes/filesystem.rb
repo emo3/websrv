@@ -34,7 +34,7 @@ lvm_logical_volume 'lvtmp' do
   group 'rootvg'
   size '6G'
   filesystem 'xfs'
-  mount_point node['temp_dir']
+  mount_point node['rwebsrv']['temp_dir']
   # action :resize
   action :nothing
 end
