@@ -14,14 +14,14 @@ lvm_physical_volume '/dev/sdb'
 
 #######################################
 # Set volume group
-lvm_volume_group node['rwebsrv']['volg'] do
+lvm_volume_group node['rwebsrv']['lvg_name'] do
   physical_volumes ['/dev/sdb']
 end
 
 #######################################
 # Set logical volume
 lvm_logical_volume node['rwebsrv']['lvol'] do
-  group node['rwebsrv']['volg']
+  group node['rwebsrv']['lvg_name']
   size '80G'
   filesystem 'xfs'
   mount_point node['rwebsrv']['www_dir']
