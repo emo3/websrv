@@ -20,7 +20,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: myrhel-7.4
+  - name: myrhel-7.5
 
 suites:
   - name: rwebsrv
