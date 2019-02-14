@@ -2,7 +2,7 @@
 # Cookbook:: rwebsrv
 # Recipe:: default
 #
-# Copyright:: 2017, Ed Overton, Apache 2.0
+# Copyright:: 2019, Ed Overton, Apache 2.0
 include_recipe '::filesystem'
 
 # set the IP and chef server name
