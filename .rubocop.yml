@@ -10,3 +10,6 @@ AllCops:
 
 Documentation:
   Enabled: false
+
+Style/GlobalVars:
+  AllowedVariables: [$access_token]
