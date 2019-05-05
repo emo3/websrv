@@ -7,7 +7,7 @@ driver:
     cpus: <%= ENV['WEB_CPU'] %>
     name: rwebsrv
   network:
-   - ['private_network', ip: '10.1.1.40']
+   - ['private_network', ip: '10.1.1.30']
 
 provisioner:
   name: chef_zero
@@ -20,7 +20,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: myrhel-7.5
+  - name: myrhel-7.6
 
 suites:
   - name: rwebsrv

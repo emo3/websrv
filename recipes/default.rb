@@ -25,9 +25,6 @@ yum_repository 'CentOS-Base' do
   only_if { node['platform'] == 'centos' }
 end
 
-# install dependencies
-package node['rwebsrv']['rhel']
-
 # delete current yum repository's
 yum_repository 'centos7' do
   action :delete
@@ -38,6 +35,9 @@ yum_repository 'rhel7' do
   action :delete
   only_if { node['platform'] == 'redhat' }
 end
+
+# install dependencies
+package node['rwebsrv']['rhel']
 
 # Delete old registration
 rhsm_register 'rwebsrv' do
@@ -80,16 +80,35 @@ end
 # end
 
 # node.default['apache']['listen'] = ['*:443']
-include_recipe 'apache2'
-include_recipe 'apache2::mod_ssl'
+# include_recipe 'apache2'
+# include_recipe 'apache2::mod_ssl'
 
-template '/etc/httpd/conf/httpd.conf' do
-  source 'httpd.conf.erb'
-  action :create
-  owner 'apache'
-  group 'apache'
-  mode '0644'
+service 'apache2' do
+  extend Apache2::Cookbook::Helpers
+  service_name lazy { apache_platform_service_name }
+  supports restart: true, status: true, reload: true
+  action :nothing
 end
+
+apache2_install 'default_install'
+apache2_module 'headers'
+apache2_module 'ssl'
+
+apache2_default_site 'rwebsrv' do
+  default_site_name 'rwebsrv'
+  cookbook 'rwebsrv'
+  port '443'
+  template_source 'httpd.conf.erb'
+  action :enable
+end
+
+# template '/etc/httpd/conf/httpd.conf' do
+#  source 'httpd.conf.erb'
+#  action :create
+#  owner 'apache'
+#  group 'apache'
+#  mode '0644'
+# end
 
 # web_app 'rwebsrv' do
 #  cookbook 'ssl_certificate'
