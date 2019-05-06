@@ -12,40 +12,39 @@ hostsfile_entry node['rwebsrv']['chefsrv_ip'] do
   unique   true
 end
 
-# Add internet mirror
-yum_repository 'CentOS-Base' do
-  description 'CentOS-7.x - Base'
-  mirrorlist 'http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os&infra=$infra'
-  # baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+yum_repository 'rhel7' do
+  action :delete
+end
+
+yum_repository 'rhel7-local-base' do
+  description 'RHEL-7.x - Base'
+  baseurl 'file:///media/sf_repos/rhel-7-server-rpms'
   gpgcheck true
-  gpgkey 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7'
+  gpgkey 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release'
   enabled true
   action :create
   make_cache false
-  only_if { node['platform'] == 'centos' }
 end
 
-# delete current yum repository's
-yum_repository 'centos7' do
-  action :delete
-  only_if { node['platform'] == 'centos' }
-end
-
-yum_repository 'rhel7' do
-  action :delete
-  only_if { node['platform'] == 'redhat' }
+yum_repository 'rhel7-local-extra' do
+  description 'RHEL-7.x - Extras'
+  baseurl 'file:///media/sf_repos/rhel-7-server-extras-rpms'
+  gpgcheck true
+  gpgkey 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release'
+  enabled true
+  action :create
+  make_cache false
 end
 
 # install dependencies
 package node['rwebsrv']['rhel']
 
 # Delete old registration
-rhsm_register 'rwebsrv' do
-  organization '8039968'
-  activation_key 'emo3-rhel-akey'
-  action :unregister
-  only_if { node['platform'] == 'redhat' }
-end
+# rhsm_register 'rwebsrv' do
+#  organization '8039968'
+#  activation_key 'emo3-rhel-akey'
+#  action :unregister
+# end
 
 # add box to RHSM
 rhsm_register 'rwebsrv' do
@@ -54,12 +53,10 @@ rhsm_register 'rwebsrv' do
   action :register
   auto_attach true
   install_katello_agent false
-  only_if { node['platform'] == 'redhat' }
 end
 
 rhsm_repo 'rhel-7-server-rpms' do
   action :enable
-  only_if { node['platform'] == 'redhat' }
 end
 
 # update and upgrade
@@ -119,7 +116,7 @@ end
 #  # ssl_chain cert.chain_path
 # end
 
-template "#{node['rwebsrv']['www_dir']}/html/index.html" do
+template "#{node['rwebsrv']['www_dir']}/index.html" do
   source 'index.html.erb'
   action :create
   owner 'apache'
@@ -127,12 +124,12 @@ template "#{node['rwebsrv']['www_dir']}/html/index.html" do
   mode '0644'
 end
 
-node['rwebsrv']['repos_dir'].each do |repo|
-  directory repo do
-    action :create
+node['rwebsrv']['repos_list'].each do |rlist|
+  link "/var/www/html/#{rlist}" do
+    to "/media/sf_repos/#{rlist}"
     owner 'apache'
     group 'apache'
-    mode '0755'
+    mode '0644'
   end
 end
 
@@ -148,57 +145,39 @@ execute 'rhel_sync' do
 --download_path=#{node['rwebsrv']['www_dir']}/html \
 --downloadcomps \
 --download-metadata"
-  only_if { node['platform'] == 'redhat' }
   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-rpms/comps.xml") }
   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-extras-rpms/comps.xml") }
+  action :nothing
 end
 
 execute 'rhel_create_updates' do
   command "createrepo -v #{node['rwebsrv']['www_dir']}/html/rhel-7-server-rpms/ -g comps.xml"
   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-rpms/comps.xml") }
-  only_if { node['platform'] == 'redhat' }
 end
 
 execute 'rhel_create_extras' do
   command "createrepo -v #{node['rwebsrv']['www_dir']}/html/rhel-7-server-extras-rpms/ -g comps.xml"
   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-extras-rpms/comps.xml") }
-  only_if { node['platform'] == 'redhat' }
-end
-
-# Put back local repo
-template '/etc/yum.repos.d/centos7.repo' do
-  source 'centos7.repo.erb'
-  action :create
-  owner 'root'
-  group 'root'
-  mode '0644'
-  only_if { node['platform'] == 'centos' }
-end
-
-# Delete internet repo
-yum_repository 'CentOS-Base' do
-  action :delete
-  only_if { node['platform'] == 'centos' }
 end
 
 execute 'rsync_centos_os' do
-  command "rsync -avzh rsync://mirror.umd.edu/centos/7/os/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos_dir']}/os"
-  only_if { Dir.exist?("#{node['rwebsrv']['centos_dir']}/os") }
+  command "rsync -avzh rsync://mirror.umd.edu/centos/7/os/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos7_dir']}/os"
+  only_if { Dir.exist?("#{node['rwebsrv']['centos7_dir']}/os") }
 end
 
 execute 'rsync_centos_updates' do
-  command "rsync -avzh rsync://mirror.umd.edu/centos/7/updates/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos_dir']}/updates"
-  only_if { Dir.exist?("#{node['rwebsrv']['centos_dir']}/updates") }
+  command "rsync -avzh rsync://mirror.umd.edu/centos/7/updates/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos7_dir']}/updates"
+  only_if { Dir.exist?("#{node['rwebsrv']['centos7_dir']}/updates") }
 end
 
 execute 'rsync_centos_extras' do
-  command "rsync -avzh rsync://mirror.umd.edu/centos/7/extras/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos_dir']}/extras"
-  only_if { Dir.exist?("#{node['rwebsrv']['centos_dir']}/extras") }
+  command "rsync -avzh rsync://mirror.umd.edu/centos/7/extras/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos7_dir']}/extras"
+  only_if { Dir.exist?("#{node['rwebsrv']['centos7_dir']}/extras") }
 end
 
 execute 'rsync_epel7' do
-  command "rsync -avzh rsync://mirror.umd.edu/fedora/epel/7/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['www_dir']}/html/epel7"
-  only_if { Dir.exist?(node['rwebsrv']['epel_dir']) }
+  command "rsync -avzh rsync://mirror.umd.edu/fedora/epel/7/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['epel7_dir']}"
+  only_if { Dir.exist?(node['rwebsrv']['epel7_dir']) }
 end
 
 template '/var/www/daily-rsync.sh' do
