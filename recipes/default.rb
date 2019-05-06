@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 # Copyright:: 2019, Ed Overton, Apache 2.0
-include_recipe '::filesystem'
+# include_recipe '::filesystem'
 
 # set the IP and chef server name
 hostsfile_entry node['rwebsrv']['chefsrv_ip'] do
@@ -40,11 +40,11 @@ end
 package node['rwebsrv']['rhel']
 
 # Delete old registration
-# rhsm_register 'rwebsrv' do
-#  organization '8039968'
-#  activation_key 'emo3-rhel-akey'
-#  action :unregister
-# end
+rhsm_register 'rwebsrv' do
+  organization '8039968'
+  activation_key 'emo3-rhel-akey'
+  action :unregister
+end
 
 # add box to RHSM
 rhsm_register 'rwebsrv' do
@@ -88,8 +88,8 @@ service 'apache2' do
 end
 
 apache2_install 'default_install'
-apache2_module 'headers'
-apache2_module 'ssl'
+# apache2_module 'headers'
+# apache2_module 'ssl'
 
 apache2_default_site 'rwebsrv' do
   default_site_name 'rwebsrv'
@@ -146,7 +146,6 @@ execute 'rhel_sync' do
 --download-metadata"
   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-rpms/comps.xml") }
   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-extras-rpms/comps.xml") }
-  action :nothing
 end
 
 execute 'rhel_create_updates' do
