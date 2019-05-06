@@ -129,7 +129,6 @@ node['rwebsrv']['repos_list'].each do |rlist|
     to "/media/sf_repos/#{rlist}"
     owner 'apache'
     group 'apache'
-    mode '0644'
   end
 end
 
@@ -160,17 +159,17 @@ execute 'rhel_create_extras' do
   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-extras-rpms/comps.xml") }
 end
 
-execute 'rsync_centos_os' do
+execute 'rsync_centos7_os' do
   command "rsync -avzh rsync://mirror.umd.edu/centos/7/os/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos7_dir']}/os"
   only_if { Dir.exist?("#{node['rwebsrv']['centos7_dir']}/os") }
 end
 
-execute 'rsync_centos_updates' do
+execute 'rsync_centos7_updates' do
   command "rsync -avzh rsync://mirror.umd.edu/centos/7/updates/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos7_dir']}/updates"
   only_if { Dir.exist?("#{node['rwebsrv']['centos7_dir']}/updates") }
 end
 
-execute 'rsync_centos_extras' do
+execute 'rsync_centos7_extras' do
   command "rsync -avzh rsync://mirror.umd.edu/centos/7/extras/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos7_dir']}/extras"
   only_if { Dir.exist?("#{node['rwebsrv']['centos7_dir']}/extras") }
 end
