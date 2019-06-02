@@ -2,6 +2,7 @@
 
 Todo: Put a description of your cookbook here. Include at a high level the
 intent and purpose of why someone would use this cookbook.
+package-cleanup --oldkernels --count=1
 
 ## Scope
 
