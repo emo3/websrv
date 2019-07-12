@@ -14,5 +14,6 @@ default['rwebsrv']['lvg_name']    = 'apmvg'
 default['rwebsrv']['rhel']        = %w(yum-utils createrepo rsync subscription-manager)
 default['rwebsrv']['repo_stat']   = '1'
 default['rwebsrv']['chefsrv_ip']  = '10.1.1.10'
-default['rwebsrv']['websrv_ip']   = '10.1.1.30'
+default['rwebsrv']['cwebsrv_ip']  = '10.1.1.30'
+default['rwebsrv']['nwebsrv_ip']  = '10.1.1.31'
 default['rwebsrv']['temp_dir']    = '/tmp'

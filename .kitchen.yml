@@ -1,14 +1,14 @@
 ---
 driver:
   name: vagrant
-  vm_hostname: rwebsrv
+  vm_hostname: rwebsrv1
   customize:
     memory: <%= ENV['WEB_RAM'] %>
     cpus: <%= ENV['WEB_CPU'] %>
-    name: rwebsrv
+    name: rwebsrv1
 
   network:
-   - ['private_network', ip: '10.1.1.30']
+   - ['private_network', ip: '10.1.1.31']
 
 provisioner:
   name: chef_zero
@@ -24,7 +24,7 @@ platforms:
   - name: myrhel-7.6
 
 suites:
-  - name: rwebsrv
+  - name: rwebsrv1
     run_list:
       - recipe[rwebsrv::default]
     verifier:
