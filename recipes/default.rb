@@ -55,14 +55,14 @@ end
 # Delete old
 # rhsm_register 'websrv' do
 #   organization '8039968'
-#   activation_key 'emo3-rhel-akey'
+#   activation_key 'websrv-rhel-akey'
 #   action :unregister
 # end
 
 # add box to RHSM
 rhsm_register 'websrv' do
   organization '8039968'
-  activation_key 'emo3-rhel-akey'
+  activation_key 'websrv-rhel-akey'
   auto_attach true
   install_katello_agent false
 end
