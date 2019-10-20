@@ -1,9 +1,7 @@
-# # encoding: utf-8
+# InSpec test for recipe websrv::default
 
-# Inspec test for recipe websrv::default
-
-# The Inspec reference, with examples and extensive documentation, can be
-# found at http://inspec.io/docs/reference/resources/
+# The InSpec reference, with examples and extensive documentation, can be
+# found at https://www.inspec.io/docs/reference/resources/
 
 unless os.windows?
   # This is an example test, replace with your own test.

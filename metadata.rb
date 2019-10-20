@@ -12,7 +12,7 @@ supports 'centos'
 # tracked.  A `View Issues` link will be displayed on this cookbook's page when
 # uploaded to a Supermarket.
 #
-# issues_url 'https://github.com/<insert_org_here>/websrv/issues' if respond_to?(:issues_url)
+# issues_url 'https://github.com/<insert_org_here>/websrv/issues'
 
 # The `source_url` points to the development repository for this cookbook.  A
 # `View Source` link will be displayed on this cookbook's page when uploaded to
