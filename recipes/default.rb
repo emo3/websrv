@@ -1,66 +1,66 @@
 #
-# Cookbook:: rwebsrv
+# Cookbook:: websrv
 # Recipe:: default
 #
 # Copyright:: 2019, Ed Overton, Apache 2.0
 # include_recipe '::filesystem'
 
 # set the IP and chef server name
-hostsfile_entry node['rwebsrv']['chefsrv_ip'] do
+hostsfile_entry node['websrv']['chefsrv_ip'] do
   hostname 'chefsrv'
   action   :create
   unique   true
 end
 
 # set the IP and chef server name
-hostsfile_entry node['rwebsrv']['cwebsrv_ip'] do
-  hostname 'rwebsrv'
+hostsfile_entry node['websrv']['cwebsrv_ip'] do
+  hostname 'websrv'
   action   :create
   unique   true
 end
 
-yum_repository 'rhel7' do
-  action :delete
-end
+# yum_repository 'rhel7' do
+#   action :delete
+# end
+#
+# yum_repository 'rhel7-web-base' do
+#   description 'RHEL-7.x - Web Base'
+#   baseurl "http://#{node['websrv']['cwebsrv_ip']}/rhel-7-server-rpms"
+#   gpgcheck true
+#   gpgkey 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release'
+#   enabled true
+#   make_cache false
+# end
+#
+# yum_repository 'rhel7-local-base' do
+#   description 'RHEL-7.x - Base'
+#   baseurl 'file:///media/sf_repos/rhel-7-server-rpms'
+#   gpgcheck true
+#   gpgkey 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release'
+#   enabled true
+#   action :nothing
+#   make_cache false
+# end
+#
+# yum_repository 'rhel7-local-extra' do
+#   description 'RHEL-7.x - Extras'
+#   baseurl 'file:///media/sf_repos/rhel-7-server-extras-rpms'
+#   gpgcheck true
+#   gpgkey 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release'
+#   enabled true
+#   action :nothing
+#   make_cache false
+# end
 
-yum_repository 'rhel7-web-base' do
-  description 'RHEL-7.x - Web Base'
-  baseurl "http://#{node['rwebsrv']['cwebsrv_ip']}/rhel-7-server-rpms"
-  gpgcheck true
-  gpgkey 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release'
-  enabled true
-  make_cache false
-end
-
-yum_repository 'rhel7-local-base' do
-  description 'RHEL-7.x - Base'
-  baseurl 'file:///media/sf_repos/rhel-7-server-rpms'
-  gpgcheck true
-  gpgkey 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release'
-  enabled true
-  action :nothing
-  make_cache false
-end
-
-yum_repository 'rhel7-local-extra' do
-  description 'RHEL-7.x - Extras'
-  baseurl 'file:///media/sf_repos/rhel-7-server-extras-rpms'
-  gpgcheck true
-  gpgkey 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release'
-  enabled true
-  action :nothing
-  make_cache false
-end
-
-# Delete old registration
-# rhsm_register 'rwebsrv' do
-#  organization '8039968'
-#  activation_key 'emo3-rhel-akey'
-#  action :unregister
+# Delete old
+# rhsm_register 'websrv' do
+#   organization '8039968'
+#   activation_key 'emo3-rhel-akey'
+#   action :unregister
 # end
 
 # add box to RHSM
-rhsm_register 'rwebsrv' do
+rhsm_register 'websrv' do
   organization '8039968'
   activation_key 'emo3-rhel-akey'
   auto_attach true
@@ -72,22 +72,22 @@ rhsm_repo 'rhel-7-server-rpms' do
 end
 
 # install dependencies
-package node['rwebsrv']['rhel']
+package node['websrv']['rhel']
 
 # update and upgrade
 execute 'yum_update_upgrade' do
   command 'sudo yum -y update && sudo yum -y upgrade'
 end
 
-# node.default['rwebsrv']['common_name'] = 'rwebsrv'
-# node.default['rwebsrv']['ssl_cert']['source'] = 'self-signed'
-# node.default['rwebsrv']['ssl_key']['source'] = 'self-signed'
+# node.default['websrv']['common_name'] = 'websrv'
+# node.default['websrv']['ssl_cert']['source'] = 'self-signed'
+# node.default['websrv']['ssl_key']['source'] = 'self-signed'
 
 # we need to save the resource variable to get the key and certificate file
 # paths
-# cert = ssl_certificate 'rwebsrv' do
-# we want to be able to use node['rwebsrv'] to configure the certificate
-#  namespace node['rwebsrv']
+# cert = ssl_certificate 'websrv' do
+# we want to be able to use node['websrv'] to configure the certificate
+#  namespace node['websrv']
 #  notifies :restart, 'service[apache2]'
 # end
 
@@ -106,9 +106,9 @@ apache2_install 'default_install'
 # apache2_module 'headers'
 # apache2_module 'ssl'
 
-# apache2_default_site 'rwebsrv' do
-#  default_site_name 'rwebsrv'
-#  cookbook 'rwebsrv'
+# apache2_default_site 'websrv' do
+#  default_site_name 'websrv'
+#  cookbook 'websrv'
 #  port '443'
 #  template_source 'httpd.conf.erb'
 #  action :enable
@@ -122,7 +122,7 @@ template '/etc/httpd/conf/httpd.conf' do
   mode '0644'
 end
 
-# web_app 'rwebsrv' do
+# web_app 'websrv' do
 #  cookbook 'ssl_certificate'
 #  server_name cert.common_name
 #  docroot '/var/www1'
@@ -131,7 +131,7 @@ end
 #  # ssl_chain cert.chain_path
 # end
 
-template "#{node['rwebsrv']['www_dir']}/index.html" do
+template "#{node['websrv']['www_dir']}/index.html" do
   source 'index.html.erb'
   action :create
   owner 'apache'
@@ -139,7 +139,7 @@ template "#{node['rwebsrv']['www_dir']}/index.html" do
   mode '0644'
 end
 
-# node['rwebsrv']['repos_list'].each do |rlist|
+# node['websrv']['repos_list'].each do |rlist|
 #  link "/var/www/html/#{rlist}" do
 #    to "/media/sf_repos/#{rlist}"
 #    owner 'apache'
@@ -156,41 +156,41 @@ include_recipe 'vsftpd::default'
 # --plugins \
 # --repoid=rhel-7-server-rpms \
 # --repoid=rhel-7-server-extras-rpms \
-# --download_path=#{node['rwebsrv']['www_dir']}/html \
+# --download_path=#{node['websrv']['www_dir']}/html \
 # --downloadcomps \
 # --download-metadata"
-#   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-rpms/comps.xml") }
-#   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-extras-rpms/comps.xml") }
+#   only_if { File.exist?("#{node['websrv']['www_dir']}/html/rhel-7-server-rpms/comps.xml") }
+#   only_if { File.exist?("#{node['websrv']['www_dir']}/html/rhel-7-server-extras-rpms/comps.xml") }
 # end
 
 # execute 'rhel_create_updates' do
-#   command "createrepo -v #{node['rwebsrv']['www_dir']}/html/rhel-7-server-rpms/ -g comps.xml"
-#   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-rpms/comps.xml") }
+#   command "createrepo -v #{node['websrv']['www_dir']}/html/rhel-7-server-rpms/ -g comps.xml"
+#   only_if { File.exist?("#{node['websrv']['www_dir']}/html/rhel-7-server-rpms/comps.xml") }
 # end
 #
 # execute 'rhel_create_extras' do
-#   command "createrepo -v #{node['rwebsrv']['www_dir']}/html/rhel-7-server-extras-rpms/ -g comps.xml"
-#   only_if { File.exist?("#{node['rwebsrv']['www_dir']}/html/rhel-7-server-extras-rpms/comps.xml") }
+#   command "createrepo -v #{node['websrv']['www_dir']}/html/rhel-7-server-extras-rpms/ -g comps.xml"
+#   only_if { File.exist?("#{node['websrv']['www_dir']}/html/rhel-7-server-extras-rpms/comps.xml") }
 # end
 #
 # execute 'rsync_centos7_os' do
-#   command "rsync -avzh rsync://mirror.umd.edu/centos/7/os/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos7_dir']}/os"
-#   only_if { Dir.exist?("#{node['rwebsrv']['centos7_dir']}/os") }
+#   command "rsync -avzh rsync://mirror.umd.edu/centos/7/os/x86_64/ --exclude=debug --exclude=drpms --delete #{node['websrv']['centos7_dir']}/os"
+#   only_if { Dir.exist?("#{node['websrv']['centos7_dir']}/os") }
 # end
 #
 # execute 'rsync_centos7_updates' do
-#   command "rsync -avzh rsync://mirror.umd.edu/centos/7/updates/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos7_dir']}/updates"
-#   only_if { Dir.exist?("#{node['rwebsrv']['centos7_dir']}/updates") }
+#   command "rsync -avzh rsync://mirror.umd.edu/centos/7/updates/x86_64/ --exclude=debug --exclude=drpms --delete #{node['websrv']['centos7_dir']}/updates"
+#   only_if { Dir.exist?("#{node['websrv']['centos7_dir']}/updates") }
 # end
 #
 # execute 'rsync_centos7_extras' do
-#   command "rsync -avzh rsync://mirror.umd.edu/centos/7/extras/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['centos7_dir']}/extras"
-#   only_if { Dir.exist?("#{node['rwebsrv']['centos7_dir']}/extras") }
+#   command "rsync -avzh rsync://mirror.umd.edu/centos/7/extras/x86_64/ --exclude=debug --exclude=drpms --delete #{node['websrv']['centos7_dir']}/extras"
+#   only_if { Dir.exist?("#{node['websrv']['centos7_dir']}/extras") }
 # end
 #
 # execute 'rsync_epel7' do
-#   command "rsync -avzh rsync://mirror.umd.edu/fedora/epel/7/x86_64/ --exclude=debug --exclude=drpms --delete #{node['rwebsrv']['epel7_dir']}"
-#   only_if { Dir.exist?(node['rwebsrv']['epel7_dir']) }
+#   command "rsync -avzh rsync://mirror.umd.edu/fedora/epel/7/x86_64/ --exclude=debug --exclude=drpms --delete #{node['websrv']['epel7_dir']}"
+#   only_if { Dir.exist?(node['websrv']['epel7_dir']) }
 # end
 #
 # template '/var/www/daily-rsync.sh' do
@@ -209,7 +209,7 @@ include_recipe 'vsftpd::default'
 # end
 
 # change ip
-ifconfig node['rwebsrv']['nwebsrv_ip'] do
+ifconfig node['websrv']['nwebsrv_ip'] do
   device 'enp0s8'
 end
 

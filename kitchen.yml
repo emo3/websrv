@@ -26,7 +26,7 @@ verifier:
 platforms:
   - name: myrhel7
     provisioner:
-      download_url: http://10.1.1.30/media/chef-<%= ENV['chef_release'] %>-1.el7.x86_64.rpm
+      download_url: https://packages.chef.io/files/stable/chef/<%= ENV['chef_release'] %>/el/7/chef-<%= ENV['chef_release'] %>-1.el7.x86_64.rpm
 
 suites:
   - name: rwebsrv
