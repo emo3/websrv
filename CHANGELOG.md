@@ -1,6 +1,6 @@
-# rwebsrv CHANGELOG
+# websrv CHANGELOG
 
-This file is used to list changes made in each version of the rwebsrv cookbook.
+This file is used to list changes made in each version of the websrv cookbook.
 
 # 0.1.0
 

@@ -1,11 +1,11 @@
 ---
 driver:
   name: vagrant
-  vm_hostname: rwebsrv
+  vm_hostname: websrv
   customize:
     memory: <%= ENV['WEB_RAM'] %>
     cpus: <%= ENV['WEB_CPU'] %>
-    name: rwebsrv
+    name: websrv
 
   network:
    - ['private_network', ip: '10.1.1.30']
@@ -29,9 +29,9 @@ platforms:
       download_url: https://packages.chef.io/files/stable/chef/<%= ENV['chef_release'] %>/el/7/chef-<%= ENV['chef_release'] %>-1.el7.x86_64.rpm
 
 suites:
-  - name: rwebsrv
+  - name: websrv
     run_list:
-      - recipe[rwebsrv::default]
+      - recipe[websrv::default]
     verifier:
       inspec_tests:
         - test/integration/default

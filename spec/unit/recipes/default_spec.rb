@@ -1,11 +1,11 @@
-# Cookbook:: rwebsrv
+# Cookbook:: websrv
 # Spec:: default
 #
 # Copyright:: 2019, Ed Overton, Apache 2.0
 
 require 'spec_helper'
 
-describe 'rwebsrv::default' do
+describe 'websrv::default' do
   context 'When all attributes are default, on an Redhat 7.x' do
     let(:chef_run) do
       # for a complete list of available platforms and versions see:
