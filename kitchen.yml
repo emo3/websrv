@@ -14,7 +14,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: myrhel7
+  - name: brhel7
 
 suites:
   - name: default
