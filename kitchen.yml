@@ -1,14 +1,20 @@
 ---
 driver:
   name: vagrant
+  vm_hostname: websrv
+  customize:
+    memory: <%= ENV['WEB_RAM'] %>
+    cpus: <%= ENV['WEB_CPU'] %>
+    name: websrv
   network:
-   - ['private_network', ip: '10.1.1.31']
+   - ['private_network', ip: '10.1.1.30']
 
 provisioner:
   name: chef_zero
   product_name: chef
-  enforce_idempotency: true
-  multiple_converge: 2
+  install_strategy: always
+  deprecations_as_errors: true
+  chef_license: accept-no-persist
 
 verifier:
   name: inspec
@@ -17,15 +23,6 @@ platforms:
   - name: brhel7
 
 suites:
-  - name: default
-    run_list:
-      - recipe[test::default]
-  - name: basic_site
-    run_list:
-      - recipe[test::basic_site]
   - name: ssl
     run_list:
-      - recipe[test::mod_ssl]
-  - name: ports
-    run_list:
-      - recipe[test::ports]
+      - recipe[websrv::ssl]

@@ -1,7 +1,24 @@
 ssl_dir           = '/home/apache2'
 ssl_cert_file     = "#{ssl_dir}/server.crt"
 ssl_cert_key_file = "#{ssl_dir}/server.key"
-app_dir           = '/var/www/basic_site'
+app_dir           = '/var/www/html'
+
+# set the IP and chef server name
+hostsfile_entry node['websrv']['chefsrv_ip'] do
+  hostname 'chefsrv'
+  action   :create
+  unique   true
+end
+
+# set the IP and chef server name
+hostsfile_entry node['websrv']['websrv_ip'] do
+  hostname 'websrv'
+  action   :create
+  unique   true
+end
+
+# install dependencies
+package node['websrv']['rhel']
 
 apache2_install 'default'
 

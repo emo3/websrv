@@ -86,13 +86,13 @@ end
 #  # ssl_chain cert.chain_path
 # end
 
-template "#{node['websrv']['www_dir']}/index.html" do
-  source 'index.html.erb'
-  action :create
-  owner 'apache'
-  group 'apache'
-  mode '0644'
-end
+# template "#{node['websrv']['www_dir']}/index.html" do
+#   source 'index.html.erb'
+#   action :create
+#   owner 'apache'
+#   group 'apache'
+#   mode '0644'
+# end
 
 # node['websrv']['repos_list'].each do |rlist|
 #  link "/var/www/html/#{rlist}" do
@@ -102,7 +102,7 @@ end
 #  end
 # end
 
-include_recipe 'vsftpd::default'
+# include_recipe 'vsftpd::default'
 
 # sync RHEL repos
 # execute 'rhel_sync' do
