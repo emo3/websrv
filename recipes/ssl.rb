@@ -1,7 +1,7 @@
 ssl_dir           = '/home/apache2'
 ssl_cert_file     = "#{ssl_dir}/server.crt"
 ssl_cert_key_file = "#{ssl_dir}/server.key"
-app_dir           = '/var/www/html'
+app_dir           = '/var/www'
 
 # set the IP and chef server name
 hostsfile_entry node['websrv']['chefsrv_ip'] do
@@ -94,3 +94,9 @@ template site_name do
 end
 
 apache2_site site_name
+
+file '/tmp/mount-share.sh' do
+  mode '0755'
+  owner 'vagrant'
+  group 'vagrant'
+end
