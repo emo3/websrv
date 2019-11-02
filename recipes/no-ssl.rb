@@ -64,3 +64,10 @@ apache2_site site_name
 apache2_site '000-default' do
   action :disable
 end
+
+mount app_dir do
+  device 'html'
+  fstype 'vboxsf'
+  options 'rw,gid=48,uid=48'
+  action [:mount, :enable]
+end
