@@ -36,6 +36,7 @@ directory app_dir do
   recursive true
 end
 
+## Add this section of code only when testing
 # file "#{app_dir}/index.html" do
 #   content 'Hello World'
 #   extend  Apache2::Cookbook::Helpers
@@ -61,13 +62,12 @@ end
 
 apache2_site site_name
 
-apache2_site '000-default' do
-  action :disable
-end
-
+## This will not work unless you add the shared folder in VirtualBox
+# uid+gid=48 - apache account
 mount app_dir do
   device 'html'
   fstype 'vboxsf'
   options 'rw,gid=48,uid=48'
+  ignore_failure true
   action [:mount, :enable]
 end
