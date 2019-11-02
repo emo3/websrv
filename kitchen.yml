@@ -20,7 +20,6 @@ verifier:
   name: inspec
 
 platforms:
-  - name: brhel7  # bento box
   - name: myrhel7 # my packer box
 
 suites:
