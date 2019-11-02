@@ -1,13 +1,13 @@
 ---
 driver:
   name: vagrant
-  vm_hostname: websrv
+  vm_hostname: <%= ENV['WEB_NAME'] %>
   customize:
     memory: <%= ENV['WEB_RAM'] %>
     cpus: <%= ENV['WEB_CPU'] %>
-    name: websrv
+    name: <%= ENV['WEB_NAME'] %>
   network:
-   - ['private_network', ip: '10.1.1.30']
+   - ['private_network', ip: '<%= ENV['WEB_IP'] %>']
 
 provisioner:
   name: chef_zero
@@ -23,6 +23,6 @@ platforms:
   - name: brhel7
 
 suites:
-  - name: ssl
+  - name: no-ssl
     run_list:
-      - recipe[websrv::ssl]
+      - recipe[websrv::no-ssl]
