@@ -12,6 +12,12 @@ supported?
 
 ## Requirements
 
+The following environmental variables must be defined:
+  WEB_NAME = Name of the Web Server: websrv
+  WEB_RAM  = Ram of Server: 1024
+  WEB_CPU  = Number of CPUs: 1
+  WEB_IP   = IP address: 10.1.1.30
+
 Todo: List any technical requirements for using this cookbook. Do you need to
 install binaries from the network? Does the cookbook make other assumptions
 about the environment for it to be used? Does the operating system need to have
@@ -24,13 +30,11 @@ Also, tailor the subsections below:
 
 ### Chef
 
-- Chef 12
+- Chef 13+
 
 ### Dependencies
 
-- lvm
-- limits
-- selinux
+- apache2
 - hostsfile
 
 ## Usage
