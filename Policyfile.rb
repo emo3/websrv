@@ -7,10 +7,10 @@
 name 'websrv'
 
 # Where to find external cookbooks:
-default_source :supermarket
+default_source :community
 
 # run_list: chef-client will run these recipes in the order specified.
-run_list 'websrv::default'
+run_list 'websrv::no-ssl'
 
 # Specify a custom source for a single cookbook:
 cookbook 'websrv', path: '.'
