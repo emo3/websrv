@@ -3,7 +3,7 @@
   DocumentRoot <%= @document_root %>
 
   <Directory <%= @document_root %>>
-    Options FollowSymLinks
+    Options Indexes MultiViews
     AllowOverride None
     Require all granted
   </Directory>
