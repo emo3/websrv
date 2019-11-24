@@ -21,7 +21,7 @@ end
 
 bind_acl 'acl-dns-masters' do
   entries [
-    '! 10.1.1.1',
+    '! 10.1.1.2',
     '10/8',
   ]
 end
@@ -32,10 +32,8 @@ bind_acl 'acl-dns-slaves' do
   ]
 end
 
-bind_acl 'example-lan' do
+bind_acl 'lan' do
   entries [
-    '10.2/16',
-    '10.3.2/24',
-    '10.4.3.2',
+    '10.1/16',
   ]
 end
