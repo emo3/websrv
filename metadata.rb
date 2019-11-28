@@ -5,7 +5,7 @@ maintainer       'Ed Overton'
 chef_version     '>= 13.9'
 license          'Apache-2.0'
 description      'Installs/Configures websrv'
-version          '1.3.2'
+version          '1.4.0'
 
 supports 'redhat'
 supports 'centos'
