@@ -6,7 +6,7 @@ maintainer_email 'noreply@bogus.com'
 chef_version     '>= 13.9'
 license          'Apache-2.0'
 description      'Installs/Configures websrv'
-version          '1.4.0'
+version          '1.4.1'
 
 supports 'redhat'
 supports 'centos'
