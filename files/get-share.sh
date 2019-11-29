@@ -1,6 +1,6 @@
 if [[ -n "$1" ]]; then
   echo "Part A of script"
-  VBoxManage list --long vms|grep $1|grep UUID
+  VBoxManage list --long vms|grep UUID
   echo "*** set uuid with above value"
   echo "example: export uuid=9df71aeb-7a01-1234-98c8-04cc0273238c"
   vagrant global-status|grep $1

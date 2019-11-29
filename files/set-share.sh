@@ -1,7 +1,7 @@
 if [[ -n "$id" ]]; then
   if [[ -n "$uuid" ]]; then
     vagrant halt ${id}
-    VBoxManage sharedfolder add ${uuid} --name html --hostpath ~/repos
+    VBoxManage sharedfolder add ${uuid} --name html --hostpath $HOME/repos
     vagrant up ${id}
   else
     echo "Usage: Must have uuid set"
