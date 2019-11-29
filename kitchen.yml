@@ -24,8 +24,6 @@ platforms:
 
 suites:
   - name: no-ssl
-    run_list:
-      - recipe[websrv::no-ssl]
     verifier:
       inspec_tests:
         - test/integration/default
