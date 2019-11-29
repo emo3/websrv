@@ -9,7 +9,7 @@ TBD
 
 ## Requirements
 
-The following environmental variables must be defined:
+The following environmental variables must be defined:<br>
   WEB_NAME = Name of the Web Server: websrv<br>
   WEB_RAM  = Ram of Server: 1024<br>
   WEB_CPU  = Number of CPUs: 1<br>
