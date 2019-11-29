@@ -10,10 +10,10 @@ TBD
 ## Requirements
 
 The following environmental variables must be defined:
-  WEB_NAME = Name of the Web Server: websrv
-  WEB_RAM  = Ram of Server: 1024
-  WEB_CPU  = Number of CPUs: 1
-  WEB_IP   = IP address: 10.1.1.30
+  WEB_NAME = Name of the Web Server: websrv<br>
+  WEB_RAM  = Ram of Server: 1024<br>
+  WEB_CPU  = Number of CPUs: 1<br>
+  WEB_IP   = IP address: 10.1.1.30<br>
 
 ### Platforms
 

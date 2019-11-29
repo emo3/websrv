@@ -1,52 +1,23 @@
-*.rbc
-.config
-coverage
-InstalledFiles
-lib/bundler/man
-pkg
-rdoc
-spec/reports
-test/tmp
-test/version_tmp
-tmp
-_Store
+.vagrant
 *~
 *#
 .#*
 \#*#
 .*.sw[a-z]
 *.un~
-*.tmp
-*.bk
-*.bkup
 .DS_Store
 
-# ruby/bundler files
-.ruby-version
-.ruby-gemset
-.rvmrc
+# Bundler
 Gemfile.lock
-.bundle
-*.gem
+gems.locked
+bin/*
+.bundle/*
 
-# YARD artifacts
-.yardoc
-_yardoc
-doc/
-.idea
+# test kitchen
+.kitchen/
+kitchen.local.yml
 
-# chef stuff
+# Chef
 Berksfile.lock
-.kitchen
-.kitchen.local.yml
-vendor/
-.coverage/
 .zero-knife.rb
 Policyfile.lock.json
-Cheffile.lock
-.librarian/
-
-# vagrant stuff
-.vagrant/
-.vagrant.d/
-.kitchen/
