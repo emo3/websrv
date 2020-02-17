@@ -86,7 +86,7 @@ module Apache2
         when 'freebsd', 'suse'
           lib_dir
         else
-          File.join(lib_dir, 'modules')
+          ::File.join(lib_dir, 'modules')
         end
       end
 
