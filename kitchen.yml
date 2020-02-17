@@ -21,6 +21,7 @@ verifier:
 
 platforms:
   - name: myrhel7 # my packer box
+  - name: myrhel8 # my packer box
 
 suites:
   - name: no-ssl
