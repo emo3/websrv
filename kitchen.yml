@@ -1,30 +1,39 @@
 ---
 driver:
-  name: vagrant
-  vm_hostname: <%= ENV['WEB_NAME'] %>
+  name:                   vagrant
+  vm_hostname:            <%= ENV['WEB_NAME'] %>
   customize:
-    memory: <%= ENV['WEB_RAM'] %>
-    cpus: <%= ENV['WEB_CPU'] %>
-    name: <%= ENV['WEB_NAME'] %>
+    memory:               <%= ENV['WEB_RAM'] %>
+    cpus:                 <%= ENV['WEB_CPU'] %>
+    name:                 <%= ENV['WEB_NAME'] %>
   network:
    - ['private_network', ip: '<%= ENV['WEB_IP'] %>']
 
 provisioner:
-  name: chef_zero
-  product_name: chef
-  install_strategy: once
+  name:                   chef_zero
+  product_name:           chef
+  install_strategy:       once
   deprecations_as_errors: true
-  chef_license: accept-no-persist
+  chef_license:           accept-no-persist
 
 verifier:
-  name: inspec
+  name:                   inspec
 
 platforms:
-  - name: myrhel7 # my packer box
+  - name:                 myrhel7 # my packer box
   - name: myrhel8 # my packer box
+    driver:
+      name: vagrant
+      vm_hostname: <%= ENV['WEB_NAME8'] %>
+      customize:
+        memory:    <%= ENV['WEB_RAM'] %>
+        cpus:      <%= ENV['WEB_CPU'] %>
+        name:      <%= ENV['WEB_NAME8'] %>
+      network:
+        - ['private_network', ip: '<%= ENV['WEB_IP'] %>']
 
 suites:
-  - name: no-ssl
+  - name:                 no-ssl
     verifier:
       inspec_tests:
         - test/integration/default
