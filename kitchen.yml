@@ -1,13 +1,11 @@
 ---
 driver:
-  name:                   vagrant
-  vm_hostname:            <%= ENV['WEB_NAME'] %>
+  name:     vagrant
   customize:
-    memory:               <%= ENV['WEB_RAM'] %>
-    cpus:                 <%= ENV['WEB_CPU'] %>
-    name:                 <%= ENV['WEB_NAME'] %>
+    memory: 2048
+    cpus:   2
   network:
-   - ['private_network', ip: '<%= ENV['WEB_IP'] %>']
+   - ['private_network', ip: '10.1.1.30']
 
 provisioner:
   name:                   chef_zero
@@ -20,17 +18,8 @@ verifier:
   name:                   inspec
 
 platforms:
-  - name:                 myrhel7 # my packer box
+  - name: myrhel7 # my packer box
   - name: myrhel8 # my packer box
-    driver:
-      name: vagrant
-      vm_hostname: <%= ENV['WEB_NAME8'] %>
-      customize:
-        memory:    <%= ENV['WEB_RAM'] %>
-        cpus:      <%= ENV['WEB_CPU'] %>
-        name:      <%= ENV['WEB_NAME8'] %>
-      network:
-        - ['private_network', ip: '<%= ENV['WEB_IP'] %>']
 
 suites:
   - name:                 no-ssl
