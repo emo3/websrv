@@ -20,6 +20,8 @@ verifier:
 platforms:
   - name: myrhel7 # my packer box
   - name: myrhel8 # my packer box
+  - name: mycentos7 # my packer box
+  - name: mycentos8 # my packer box
 
 suites:
   - name:                 no-ssl

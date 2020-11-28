@@ -1,5 +1,23 @@
 app_dir = '/var/www/html'
 
+if node['platform'] == 'centos'
+  file '/etc/yum.repos.d/centos8.repo' do
+    action :delete
+  end
+
+  cookbook_file '/etc/yum.repos.d/CentOS-Base.repo' do
+    mode '0644'
+    owner 'root'
+    group 'root'
+  end
+
+  cookbook_file '/etc/yum.repos.d/CentOS-AppStream.repo' do
+    mode '0644'
+    owner 'root'
+    group 'root'
+  end
+end
+
 # set the IP and chef server name
 hostsfile_entry node['websrv']['chefsrv_ip'] do
   hostname 'chefsrv'
