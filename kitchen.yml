@@ -18,8 +18,8 @@ verifier:
   name:                   inspec
 
 platforms:
-  - name: myrhel7 # my packer box
-  - name: myrhel8 # my packer box
+  - name: cent8 # my packer box
+  - name: rhel8 # my packer box
 
 suites:
   - name:                 no-ssl
