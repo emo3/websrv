@@ -6,6 +6,8 @@ driver:
     cpus:   2
   network:
    - ['private_network', ip: '10.1.1.30']
+   # PXE Client
+   - ['public_network', {bridge: 'en0: Wi-Fi (AirPort)', ip: '192.168.86.50'}]
 
 provisioner:
   name:                   chef_zero
@@ -18,6 +20,7 @@ verifier:
   name:                   inspec
 
 platforms:
+  - name: cent7 # my packer box
   - name: cent8 # my packer box
   - name: rhel8 # my packer box
 
