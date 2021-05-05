@@ -19,9 +19,10 @@ verifier:
   name:                   inspec
 
 platforms:
-  - name: cent7 # my packer box
-  - name: cent8 # my packer box
-  - name: rhel8 # my packer box
+  - name: centos-7
+  - name: centos-8
+  - name: generic/rhel7
+  - name: generic/rhel8
 
 suites:
   - name:                 no-ssl
