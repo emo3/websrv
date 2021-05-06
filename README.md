@@ -14,10 +14,13 @@ The following environmental variables must be defined:<br>
   WEB_RAM  = Ram of Server: 1024<br>
   WEB_CPU  = Number of CPUs: 1<br>
   WEB_IP   = IP address: 10.1.1.30<br>
+  Chef_Release = The version of Chef Client to use<br>
+  RepoDir = Full path directory on local system where the repos are stored<br>
 
 ### Platforms
 
 - Redhat 7.x+
+- CentOS 7.x+
 
 ### Chef
 
