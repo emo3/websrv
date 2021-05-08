@@ -1,24 +1,24 @@
 ---
 driver:
-  name:     vagrant
+  name: vagrant
   customize:
     memory: 1024
-    cpus:   1
+    cpus: 1
   network:
    - ['private_network', ip: '10.1.1.30']
   synced_folders:
-   - [<%= ENV['REPODIR'] %>, "/var/www/html"]
+   - ['<%= ENV['REPODIR'] %>', '/var/www/html']
 
 provisioner:
-  name:                   chef_zero
-  product_name:           chef
+  name: chef_zero
+  product_name: chef
   product_version: <%= ENV['chef_release'] %>
-  install_strategy:       once
+  install_strategy: once
   deprecations_as_errors: true
-  chef_license:           accept-no-persist
+  chef_license: accept-no-persist
 
 verifier:
-  name:                   inspec
+  name: inspec
 
 platforms:
   - name: centos-7
@@ -27,8 +27,7 @@ platforms:
   - name: generic/rhel8
 
 suites:
-  - name:                 no-ssl
+  - name: no-ssl
     verifier:
       inspec_tests:
         - test/integration/default
-    attributes:
