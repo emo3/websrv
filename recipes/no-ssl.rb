@@ -61,13 +61,3 @@ template site_name do
 end
 
 apache2_site site_name
-
-## This will not work unless you add the shared folder in VirtualBox
-# uid+gid=48 - apache account
-mount app_dir do
-  device 'html'
-  fstype 'vboxsf'
-  options 'rw,gid=48,uid=48'
-  ignore_failure true
-  action [:mount, :enable]
-end

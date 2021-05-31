@@ -21,9 +21,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: centos-7
   - name: centos-8
-  - name: generic/rhel7
   - name: generic/rhel8
 
 suites:
