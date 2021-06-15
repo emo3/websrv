@@ -6,10 +6,10 @@ maintainer_email 'you1@example.com'
 chef_version     '>= 13.9'
 license          'Apache-2.0'
 description      'Installs/Configures websrv'
-version          '1.4.5'
+version          '1.4.6'
 
 supports 'redhat'
 supports 'centos'
 
 depends 'apache2'
-depends 'hostsfile'
+depends 'line'

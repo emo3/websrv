@@ -1,17 +1,9 @@
 app_dir = '/var/www/html'
 
-# set the IP and chef server name
-hostsfile_entry node['websrv']['chefsrv_ip'] do
-  hostname 'chefsrv'
-  action   :create
-  unique   true
-end
-
-# set the IP and chef server name
-hostsfile_entry node['websrv']['websrv_ip'] do
-  hostname 'websrv'
-  action   :create
-  unique   true
+# set the IP and web server name
+append_if_no_line 'websrv' do
+  path '/etc/hosts'
+  line "#{node['websrv']['websrv_ip']} websrv"
 end
 
 # install dependencies
