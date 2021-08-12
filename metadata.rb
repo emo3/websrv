@@ -6,7 +6,7 @@ maintainer_email 'you1@example.com'
 chef_version     '>= 15'
 license          'Apache-2.0'
 description      'Installs/Configures websrv'
-version          '1.4.7'
+version          '1.4.8'
 
 supports 'redhat'
 supports 'centos'
