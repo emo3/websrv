@@ -22,6 +22,7 @@ verifier:
 
 platforms:
   - name: bento/centos-stream-8
+  - name: bento/centos-7
 
 suites:
   - name: no-ssl
