@@ -1,6 +1,7 @@
 ---
 driver:
   name: vagrant
+  box_download_insecure: true
   customize:
     memory: 1024
     cpus: 1
