@@ -10,6 +10,7 @@ version          '1.6.0'
 
 supports 'redhat'
 supports 'centos'
+supports 'almalinux'
 
 depends 'apache2'
 depends 'line'
