@@ -24,6 +24,7 @@ verifier:
 platforms:
   - name: bento/centos-7
   - name: bento/almalinux-8
+  - name: bento/oracle-8
 
 suites:
   - name: no-ssl
