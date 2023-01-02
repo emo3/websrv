@@ -22,8 +22,9 @@ verifier:
   name: inspec
 
 platforms:
-  - name: bento/centos-7
   - name: bento/almalinux-8
+  - name: bento/centos-7
+  - name: bento/centos-stream-8
   - name: bento/oracle-8
 
 suites:
