@@ -23,8 +23,6 @@ verifier:
 
 platforms:
   - name: bento/almalinux-8
-  - name: bento/almalinux-9
-  - name: bento/centos-7
 
 suites:
   - name: no-ssl

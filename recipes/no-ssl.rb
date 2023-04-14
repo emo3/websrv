@@ -9,6 +9,8 @@ end
 # install dependencies
 package node['websrv']['rhel']
 
+# ::Chef::DSL::Recipe.send(:include, Apache2)
+
 apache2_install 'default'
 
 service 'apache2' do

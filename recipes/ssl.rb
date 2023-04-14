@@ -1,6 +1,5 @@
-ssl_dir           = '/home/apache2'
-ssl_cert_file     = "#{ssl_dir}/server.crt"
-ssl_cert_key_file = "#{ssl_dir}/server.key"
+ssl_cert_file     = "#{apache_dir}/ssl/server.crt"
+ssl_cert_key_file = "#{apache_dir}/ssl/server.key"
 app_dir           = '/var/www/html'
 
 # set the IP and web server name
@@ -18,7 +17,7 @@ service 'apache2' do
   extend Apache2::Cookbook::Helpers
   service_name lazy { apache_platform_service_name }
   supports restart: true, status: true, reload: true
-  action [:start, :enable]
+  action :nothing
 end
 
 apache2_module 'deflate'
@@ -26,14 +25,6 @@ apache2_module 'headers'
 apache2_module 'ssl'
 
 apache2_mod_ssl ''
-
-# Create Certificates
-directory '/home/apache2' do
-  extend    Apache2::Cookbook::Helpers
-  owner     lazy { default_apache_user }
-  group     lazy { default_apache_group }
-  recursive true
-end
 
 directory app_dir do
   extend    Apache2::Cookbook::Helpers
