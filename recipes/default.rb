@@ -40,46 +40,38 @@ end
 #   group   lazy { default_apache_group }
 # end
 
-execute 'create-private-key' do
-  command "openssl genrsa > #{ssl_cert_key_file}"
-  not_if { ::File.exist?(ssl_cert_key_file) }
-end
-
-execute 'create-certficate' do
-  command %(openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout #{ssl_cert_key_file} -out #{ssl_cert_file} <<EOF
-US
-Washington
-Seattle
-Chef Software, Inc
-
-127.0.0.1
-webmaster@example.com
-EOF)
-  not_if { ::File.exist?(ssl_cert_file) }
+# Create Certificates
+openssl_x509_certificate 'create-certificate' do
+  path ssl_cert_file
+  key_file ssl_cert_key_file
+  expire 2
+  renew_before_expiry 1
+  common_name node['websrv']['websrv_ip']
+  owner 'root'
+  group 'root'
+  email 'help@sous-chefs.org'
+  org_unit 'Sous Chefs'
+  org 'Chef Software, Inc'
+  city 'Seattle'
+  state 'Washington'
+  country 'US'
+  mode '0640'
 end
 
 # Create site template with our custom config
 site_name = 'ssl_site'
 
-template site_name do
-  extend Apache2::Cookbook::Helpers
-  source 'ssl.conf.erb'
-  path "#{apache_dir}/sites-available/#{site_name}.conf"
+apache2_default_site site_name do
+  default_site_name site_name
+  template_cookbook 'websrv'
+  template_source 'ssl.conf.erb'
   variables(
     server_name: node['websrv']['websrv_ip'],
-    # server_name: 'example.com',
     document_root: app_dir,
     log_dir: lazy { default_log_dir },
-    site_name: site_name,
     ssl_cert_file: ssl_cert_file,
     ssl_cert_key_file: ssl_cert_key_file
   )
 end
 
 apache2_site site_name
-
-cookbook_file '/tmp/mount-share.sh' do
-  mode '0755'
-  owner 'vagrant'
-  group 'vagrant'
-end
