@@ -14,3 +14,4 @@ supports 'almalinux'
 
 depends 'apache2'
 depends 'line'
+depends 'acme'

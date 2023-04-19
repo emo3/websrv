@@ -1,6 +1,4 @@
-ssl_cert_file     = "#{apache_dir}/ssl/server.crt"
-ssl_cert_key_file = "#{apache_dir}/ssl/server.key"
-app_dir           = '/var/www/html'
+app_dir = '/var/www/html'
 
 # set the IP and web server name
 append_if_no_line 'websrv' do
@@ -40,38 +38,45 @@ end
 #   group   lazy { default_apache_group }
 # end
 
-# Create Certificates
-openssl_x509_certificate 'create-certificate' do
-  path ssl_cert_file
-  key_file ssl_cert_key_file
-  expire 2
-  renew_before_expiry 1
-  common_name node['websrv']['websrv_ip']
-  owner 'root'
-  group 'root'
-  email 'help@sous-chefs.org'
-  org_unit 'Sous Chefs'
-  org 'Chef Software, Inc'
-  city 'Seattle'
-  state 'Washington'
-  country 'US'
-  mode '0640'
+include_recipe 'acme'
+
+# Real certificates please...
+# node.override['acme']['endpoint'] = 'https://acme-v01.api.letsencrypt.org'
+
+site = 'websrv.local'
+# sans = ["www.#{site}"]
+
+# Generate a self-signed if we don't have a cert to prevent bootstrap problems
+acme_selfsigned "#{site}" do
+  crt     "#{apache_dir}/ssl/#{site}.crt"
+  key     "#{apache_dir}/ssl/#{site}.key"
+  chain   "#{apache_dir}/ssl/#{site}.pem"
+  owner   'apache'
+  group   'apache'
+  notifies :restart, 'service[apache2]', :immediately
 end
 
-# Create site template with our custom config
-site_name = 'ssl_site'
-
-apache2_default_site site_name do
-  default_site_name site_name
+# Set up your web server here...
+apache2_default_site site do
+  default_site_name site
   template_cookbook 'websrv'
   template_source 'ssl.conf.erb'
   variables(
     server_name: node['websrv']['websrv_ip'],
     document_root: app_dir,
     log_dir: lazy { default_log_dir },
-    ssl_cert_file: ssl_cert_file,
-    ssl_cert_key_file: ssl_cert_key_file
+    ssl_cert_file: "#{apache_dir}/ssl/#{site}.crt",
+    ssl_cert_key_file: "#{apache_dir}/ssl/#{site}.key"
   )
 end
 
-apache2_site site_name
+apache2_site site
+
+# # Get and auto-renew the certificate from Let's Encrypt
+# acme_certificate "#{site}" do
+#   crt               "#{apache_dir}/ssl/#{site}.crt"
+#   key               "#{apache_dir}/ssl/#{site}.key"
+#   wwwroot           app_dir
+#   notifies :restart, 'service[apache2]'
+#   alt_names sans
+# end
