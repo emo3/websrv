@@ -12,5 +12,5 @@ supports 'redhat'
 supports 'centos'
 supports 'almalinux'
 
-depends 'apache2'
+depends 'apache2', '~> 8' # keep at version 8 until I can fix for 9+
 depends 'line'
