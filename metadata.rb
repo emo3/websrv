@@ -8,9 +8,9 @@ license          'Apache-2.0'
 description      'Installs/Configures websrv'
 version          '1.8.0'
 
-supports 'redhat'
-supports 'centos'
-supports 'almalinux'
+supports 'redhat', '>= 7.0'
+supports 'centos', '>= 7.0'
+supports 'almalinux', '>= 8.0'
 
 depends 'apache2'
 depends 'line'

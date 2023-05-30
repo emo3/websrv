@@ -13,6 +13,8 @@ driver:
 provisioner:
   name: chef_zero
   product_name: chef
+  enforce_idempotency: true
+  multiple_converge: 2
   install_strategy: once
   deprecations_as_errors: true
   treat_deprecation_warnings_as_errors: true
@@ -28,6 +30,6 @@ platforms:
 
 suites:
   - name: no-ssl
-    verifier:
-      inspec_tests:
-        - test/integration/default
+    named_run_list: no-ssl
+
+  - name: ssl
