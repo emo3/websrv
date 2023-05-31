@@ -13,8 +13,6 @@ driver:
 provisioner:
   name: chef_zero
   product_name: chef
-  enforce_idempotency: true
-  multiple_converge: 2
   install_strategy: once
   deprecations_as_errors: true
   treat_deprecation_warnings_as_errors: true
@@ -29,7 +27,7 @@ platforms:
   - name: bento/centos-7
 
 suites:
-  - name: no-ssl
-    named_run_list: no-ssl
-
-  - name: ssl
+  - name: ws
+    verifier:
+      inspec_tests:
+        - test/integration/default

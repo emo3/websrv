@@ -86,9 +86,3 @@ template site_name do
 end
 
 apache2_site site_name
-
-cookbook_file '/tmp/mount-share.sh' do
-  mode '0755'
-  owner 'vagrant'
-  group 'vagrant'
-end
