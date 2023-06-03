@@ -1,7 +1,7 @@
 # set the IP and web server name
 append_if_no_line 'websrv' do
   path '/etc/hosts'
-  line "#{node['websrv']['websrv_ip']} websrv"
+  line "#{node['websrv']['websrv_ip']} websrv websrv.net"
 end
 
 # install dependencies
@@ -9,7 +9,7 @@ package node['websrv']['rhel']
 
 ssl_cert_file     = "#{apache_dir}/ssl/server.crt"
 ssl_cert_key_file = "#{apache_dir}/ssl/server.key"
-app_dir           = '/var/www/html'
+app_dir           = '/var/www/ssl_site'
 
 apache2_install 'default' do
   notifies :restart, 'apache2_service[default]'
@@ -61,7 +61,17 @@ openssl_x509_certificate 'create-certificate' do
   mode '0640'
 end
 
+# Include the recipe to install the gems
+include_recipe 'acme'
+# Set up contact information. Note the mailto: notation
+node.override['acme']['contact'] = ['mailto:me@example1.com']
+# Real certificates please...
+# node.override['acme']['endpoint'] = 'https://acme-v01.api.letsencrypt.org'
+
+# Set up your web server here...
 # Create site template with our custom config
+site = 'websrv.tk'
+# sans = ["www.#{site}"]
 site_name = 'ssl_site'
 
 apache2_default_site site_name do
@@ -80,6 +90,15 @@ end
 
 apache2_site site_name do
   notifies :reload, 'apache2_service[default]'
+end
+
+# Get and auto-renew the certificate from Let's Encrypt
+acme_certificate "#{site}" do
+  crt               "#{apache_dir}/ssl/server.crt"
+  key               "#{apache_dir}/ssl/server.key"
+  wwwroot           app_dir
+  notifies :restart, 'apache2_service[default]'
+  # alt_names sans
 end
 
 apache2_service 'default' do
