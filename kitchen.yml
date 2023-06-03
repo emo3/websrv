@@ -23,9 +23,11 @@ verifier:
 
 platforms:
   - name: bento/almalinux-8
+  - name: bento/almalinux-9
+  - name: bento/centos-7
 
 suites:
-  - name: websrv
+  - name: ws
     verifier:
       inspec_tests:
         - test/integration/default
