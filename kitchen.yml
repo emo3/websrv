@@ -24,7 +24,7 @@ verifier:
   name: inspec
 
 platforms:
-  - name: bento/almalinux-8
+  - name: bento/almalinux-9
 
 suites:
   - name: ws
