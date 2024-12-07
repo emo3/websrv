@@ -1,0 +1,35 @@
+---
+driver:
+  name: vagrant
+  provider: vmware_desktop
+  vmware.gui: false
+  box_download_insecure: true
+  box_auto_update: true
+  box_auto_prune: true
+  customize:
+    memory: 1024
+    cpus: 1
+  network:
+   - ['private_network', ip: '192.168.98.30']
+  synced_folders:
+   - ['<%= ENV['REPODIR'] %>', '/var/www/html']
+
+provisioner:
+  name: chef_zero
+  product_name: chef
+#  install_strategy: once
+  deprecations_as_errors: true
+  treat_deprecation_warnings_as_errors: true
+  chef_license: accept-no-persist
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: bento/almalinux-9
+
+suites:
+  - name: ws
+    verifier:
+      inspec_tests:
+        - test/integration/default
