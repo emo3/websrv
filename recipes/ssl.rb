@@ -7,6 +7,11 @@ end
 # install dependencies
 package node['websrv']['rhel']
 
+cookbook_file "#{apache_dir}/ssl/server.crt" do
+  source 'example.com+5.pem'
+  action :create
+end
+
 ssl_cert_file     = "#{apache_dir}/ssl/server.crt"
 ssl_cert_key_file = "#{apache_dir}/ssl/server.key"
 app_dir           = '/var/www/ssl_site'
@@ -44,33 +49,33 @@ end
 # end
 
 # Create Certificates
-openssl_x509_certificate 'create-certificate' do
-  path ssl_cert_file
-  key_file ssl_cert_key_file
-  expire 2
-  renew_before_expiry 1
-  common_name '127.0.0.1'
-  owner 'root'
-  group 'root'
-  email 'help@sous-chefs.org'
-  org_unit 'Sous Chefs'
-  org 'Chef Software, Inc'
-  city 'Seattle'
-  state 'Washington'
-  country 'US'
-  mode '0640'
-end
+# openssl_x509_certificate 'create-certificate' do
+#   path ssl_cert_file
+#   key_file ssl_cert_key_file
+#   expire 2
+#   renew_before_expiry 1
+#   common_name '127.0.0.1'
+#   owner 'root'
+#   group 'root'
+#   email 'help@sous-chefs.org'
+#   org_unit 'Sous Chefs'
+#   org 'Chef Software, Inc'
+#   city 'Seattle'
+#   state 'Washington'
+#   country 'US'
+#   mode '0640'
+# end
 
 # Include the recipe to install the gems
-include_recipe 'acme'
+# include_recipe 'acme'
 # Set up contact information. Note the mailto: notation
-node.override['acme']['contact'] = ['mailto:me@example1.com']
+# node.override['acme']['contact'] = ['mailto:me@example1.com']
 # Real certificates please...
 # node.override['acme']['endpoint'] = 'https://acme-v01.api.letsencrypt.org'
 
 # Set up your web server here...
 # Create site template with our custom config
-site = 'websrv.tk'
+# site = 'websrv.tk'
 # sans = ["www.#{site}"]
 site_name = 'ssl_site'
 
@@ -93,13 +98,13 @@ apache2_site site_name do
 end
 
 # Get and auto-renew the certificate from Let's Encrypt
-acme_certificate "#{site}" do
-  crt               "#{apache_dir}/ssl/server.crt"
-  key               "#{apache_dir}/ssl/server.key"
-  wwwroot           app_dir
-  notifies :restart, 'apache2_service[default]'
-  # alt_names sans
-end
+# acme_certificate "#{site}" do
+#   crt               "#{apache_dir}/ssl/server.crt"
+#   key               "#{apache_dir}/ssl/server.key"
+#   wwwroot           app_dir
+#   notifies :restart, 'apache2_service[default]'
+#   # alt_names sans
+# end
 
 apache2_service 'default' do
   action %i(enable start)
