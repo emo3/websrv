@@ -14,4 +14,5 @@ supports 'almalinux', '>= 8.0'
 
 depends 'apache2'
 depends 'line'
-depends 'acme'
+# depends 'acme' # free and trusted SSL/TLS certificates from Let's Encrypt
+

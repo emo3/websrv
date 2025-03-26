@@ -10,7 +10,8 @@ name 'websrv'
 default_source :supermarket
 
 # run_list: chef-client will run these recipes in the order specified.
-run_list 'websrv::no-ssl'
+# run_list 'websrv::no-ssl'
+run_list 'websrv::ssl'
 named_run_list :dossl, 'websrv::ssl'
 
 # Specify a custom source for a single cookbook:

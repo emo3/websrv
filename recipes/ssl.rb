@@ -7,17 +7,21 @@ end
 # install dependencies
 package node['websrv']['rhel']
 
+ssl_cert_file     = "#{apache_dir}/ssl/server.crt"
+ssl_cert_key_file = "#{apache_dir}/ssl/server.key"
+app_dir           = '/var/www/html'
+
+apache2_install 'default' do
+  notifies :restart, 'apache2_service[default]'
+end
+
 cookbook_file "#{apache_dir}/ssl/server.crt" do
   source 'example.com+5.pem'
   action :create
 end
-
-ssl_cert_file     = "#{apache_dir}/ssl/server.crt"
-ssl_cert_key_file = "#{apache_dir}/ssl/server.key"
-app_dir           = '/var/www/ssl_site'
-
-apache2_install 'default' do
-  notifies :restart, 'apache2_service[default]'
+cookbook_file "#{apache_dir}/ssl/server.key" do
+  source 'example.com+5-key.pem'
+  action :create
 end
 
 apache2_module 'deflate' do
